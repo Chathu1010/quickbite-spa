@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref } from 'vue'
 import NavBar from './components/NavBar.vue'
 import ProductCard from './components/ProductCard.vue'
+import CartDrawer from './components/CartDrawer.vue'
 import { useProducts } from './composables/useProducts'
 
-// Use our custom logic to fetch food items
 const { products, loading, fetchProducts } = useProducts()
+fetchProducts()
 
-// Run the fetch when the app starts
-onMounted(() => {
-  fetchProducts()
-})
+// THIS LINE IS REQUIRED:
+const isCartOpen = ref(false) 
 </script>
 
 <template>
   <div class="min-h-screen bg-[#0b0b0b] text-white">
-    <NavBar />
+    <NavBar @open-cart="isCartOpen = true" /> 
     
     <main class="max-w-7xl mx-auto px-8 py-12">
       <header class="mb-12">
@@ -35,5 +34,7 @@ onMounted(() => {
         />
       </div>
     </main>
+
+    <CartDrawer :isOpen="isCartOpen" @close="isCartOpen = false" />
   </div>
 </template>
