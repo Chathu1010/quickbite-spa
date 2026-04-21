@@ -3,15 +3,18 @@ import { ref } from 'vue'
 import NavBar from './components/NavBar.vue'
 import ProductCard from './components/ProductCard.vue'
 import CartDrawer from './components/CartDrawer.vue'
-import OrderSuccess from './components/OrderSuccess.vue' // Step 2: Import Success Screen
+import CheckoutPage from './components/CheckoutPage.vue'
+import OrderSuccess from './components/OrderSuccess.vue'
 import { useProducts } from './composables/useProducts'
 
+// Fetch products from your composable
 const { products, loading, fetchProducts } = useProducts()
 fetchProducts()
 
-// State management
-const isCartOpen = ref(false)
-const showSuccess = ref(false) // Step 2: State to control success screen visibility
+// --- State Management ---
+const isCartOpen = ref(false)    // Controls the side drawer
+const showCheckout = ref(false)  // Controls the full checkout form
+const showSuccess = ref(false)   // Controls the final success screen
 </script>
 
 <template>
@@ -37,12 +40,31 @@ const showSuccess = ref(false) // Step 2: State to control success screen visibi
       </div>
     </main>
 
-    <OrderSuccess v-if="showSuccess" @go-home="showSuccess = false" />
+    <CheckoutPage 
+      v-if="showCheckout" 
+      @close="showCheckout = false" 
+      @place-order="showCheckout = false; showSuccess = true" 
+    />
+
+    <OrderSuccess 
+      v-if="showSuccess" 
+      @go-home="showSuccess = false" 
+    />
 
     <CartDrawer 
       :isOpen="isCartOpen" 
       @close="isCartOpen = false" 
-      @order-complete="showSuccess = true" 
+      @order-complete="showCheckout = true" 
     />
   </div>
 </template>
+
+<style>
+/* Smooth transitions for a professional feel */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>
