@@ -60,19 +60,36 @@ const handleCheckout = () => {
         </div>
       </div>
 
-      <div class="p-6 border-t border-zinc-800 bg-zinc-900">
-        <div class="flex justify-between text-white text-xl font-bold mb-4">
-          <span>Total:</span>
-          <span class="text-orange-500">${{ cartTotal }}</span>
+      <div class="p-6 border-t border-zinc-800 bg-zinc-900 space-y-3">
+            <h3 class="text-zinc-400 uppercase text-xs font-bold tracking-widest mb-4">Order Summary</h3>
+
+            <div class="flex justify-between text-sm text-zinc-300">
+                <span>Subtotal</span>
+                <span>${{ cartTotal }}</span>
+            </div>
+
+            <div class="flex justify-between text-sm text-zinc-300">
+                <span>Delivery Fee</span>
+                <span>$2.50</span>
+            </div>
+
+            <div class="flex justify-between text-sm text-orange-500">
+                <span>Discount (QUICK20)</span>
+                <span>-$5.00</span>
+            </div>
+
+            <div class="flex justify-between text-white text-2xl font-black pt-2 border-t border-zinc-800 mt-2">
+                <span>Total</span>
+                <span>${{ (parseFloat(cartTotal) + 2.50 - 5.00).toFixed(2) }}</span>
+            </div>
+
+            <button 
+                @click="handleCheckout"
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-2xl transition-all active:scale-95 mt-4"
+            >
+                Checkout Now
+            </button>
         </div>
-        
-        <button 
-          @click="handleCheckout"
-          class="w-full bg-orange-500 hover:bg-orange-400 text-black font-extrabold py-4 rounded-2xl transition-all active:scale-95"
-        >
-          Proceed to Checkout
-        </button>
-      </div>
     </div>
   </div>
 </template>
