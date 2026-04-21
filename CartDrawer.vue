@@ -2,17 +2,23 @@
 import { useCart } from '../composables/useCart'
 
 defineProps<{ isOpen: boolean }>()
-const emit = defineEmits(['close'])
 
-// We pull all the tools we need from our cart toolbox
+// FIXED: Added 'order-complete' to the emit list
+const emit = defineEmits(['close', 'order-complete'])
+
 const { cart, cartTotal, addToCart, removeFromCart, clearCart } = useCart()
 
 const handleCheckout = () => {
   if (cart.value.length === 0) return
   
-  alert("🎉 Order Placed Successfully! Your food is on the way.")
+  // 1. Clear the items from the cart
   clearCart()
+  
+  // 2. Close the drawer
   emit('close')
+  
+  // 3. Trigger the success screen in App.vue
+  emit('order-complete')
 }
 </script>
 

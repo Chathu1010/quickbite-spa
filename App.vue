@@ -3,13 +3,15 @@ import { ref } from 'vue'
 import NavBar from './components/NavBar.vue'
 import ProductCard from './components/ProductCard.vue'
 import CartDrawer from './components/CartDrawer.vue'
+import OrderSuccess from './components/OrderSuccess.vue' // Step 2: Import Success Screen
 import { useProducts } from './composables/useProducts'
 
 const { products, loading, fetchProducts } = useProducts()
 fetchProducts()
 
-// THIS LINE IS REQUIRED:
-const isCartOpen = ref(false) 
+// State management
+const isCartOpen = ref(false)
+const showSuccess = ref(false) // Step 2: State to control success screen visibility
 </script>
 
 <template>
@@ -35,6 +37,12 @@ const isCartOpen = ref(false)
       </div>
     </main>
 
-    <CartDrawer :isOpen="isCartOpen" @close="isCartOpen = false" />
+    <OrderSuccess v-if="showSuccess" @go-home="showSuccess = false" />
+
+    <CartDrawer 
+      :isOpen="isCartOpen" 
+      @close="isCartOpen = false" 
+      @order-complete="showSuccess = true" 
+    />
   </div>
 </template>
